@@ -1,39 +1,39 @@
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import mongoose from "mongoose";
-import authRoutes, { authMiddleware } from "./routes/auth.js";
+import express from "express"
+import cors from "cors"
+import cookieParser from "cookie-parser"
+import mongoose from "mongoose"
+import authRoutes, { authMiddleware } from "./routes/auth.js"
 
-const PORT = process.env.PORT || 5000;
-const MONGODB_CONN = process.env.MONGODB_CONN;
+const PORT = process.env.PORT || 5000
+const MONGODB_CONN = process.env.MONGODB_CONN
 
-const app = express();
+const app = express()
 
 // middlewares
-app.use(cors());
-app.use(express.json());
-app.use(cookieParser());
+app.use(cors())
+app.use(express.json())
+app.use(cookieParser())
 
 // connect to MongoDB
 mongoose.connect(MONGODB_CONN).then(() => {
-    console.log("Connected to MongoDB");
+    console.log("Connected to MongoDB")
 }).catch((error) => {
-    console.error("Error connecting to MongoDB:", error);
-});
+    console.error("Error connecting to MongoDB:", error)
+})
 
 // Routes
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes)
 
-// Example of a protected route
+// protected test route
 app.get('/api/protected', authMiddleware, (req, res) => {
-    res.json({ message: `Welcome, user ${req.user.userId}!` });
-});
+    res.json({ message: `Welcome, user ${req.user.userId}!` })
+})
 
 // test route
 app.get('/', (req, res) => {
-    res.json({ message: 'Task Management API is running!' });
-});
+    res.json({ message: 'Task Management API is running!' })
+})
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+    console.log(`Server is running on port ${PORT}`)
+})
