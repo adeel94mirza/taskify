@@ -3,6 +3,7 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import mongoose from "mongoose"
 import authRoutes, { authMiddleware } from "./routes/auth.js"
+import taskRoutes from "./routes/tasks.js"
 
 const PORT = process.env.PORT || 5000
 const MONGODB_CONN = process.env.MONGODB_CONN
@@ -23,6 +24,7 @@ mongoose.connect(MONGODB_CONN).then(() => {
 
 // Routes
 app.use("/api/auth", authRoutes)
+app.use("/api/tasks", authMiddleware, taskRoutes)
 
 // protected test route
 app.get('/api/protected', authMiddleware, (req, res) => {
